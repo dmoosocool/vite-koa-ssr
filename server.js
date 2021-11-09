@@ -18,7 +18,7 @@ async function createServer(
   const indexProd = isProd
     ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8')
     : ''
-  const manifest = isProd ? require('./dist/client/ssr-mainifest.json') : {}
+  const manifest = isProd ? require('./dist/client/ssr-manifest.json') : {}
   const app = new Koa()
   const router = new Router()
   let vite
@@ -41,7 +41,7 @@ async function createServer(
     // cover express middleware to koa middleware
     app.use(connect(vite.middlewares))
   } else {
-    app.use(require('koa-staitc')(resolve('dist/client'), { index: false }))
+    app.use(require('koa-static')(resolve('dist/client'), { index: false }))
   }
 
   // router.get('/', (ctx, next)=> {
