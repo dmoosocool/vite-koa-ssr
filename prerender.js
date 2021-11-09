@@ -4,7 +4,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const toResolve = p => path.resolve(__dirname, p)
+const toResolve = (p) => path.resolve(__dirname, p)
 const manifest = require('./dist/static/ssr-manifest.json')
 const template = fs.readFileSync(toResolve('./dist/static/index.html'), 'utf-8')
 const { render } = require('./dist/server/entry-server.js')
@@ -15,12 +15,14 @@ const routesToPrerender = fs.readdirSync(toResolve('src/pages')).map((file) => {
   return name === 'home' ? '/' : `/${name}`
 })
 
-;(async()=>{
+;(async () => {
   // pre-render each route...
   for (const url of routesToPrerender) {
     const [appHtml, preloadLinks] = await render(url, manifest)
 
-    const html = template.replace(`<!--preload-links-->`, preloadLinks).replace(`<!--app-html-->`, appHtml)
+    const html = template
+      .replace(`<!--preload-links-->`, preloadLinks)
+      .replace(`<!--app-html-->`, appHtml)
     const filePath = `dist/static${url === '/' ? '/index' : url}.html`
     fs.readFileSync(toResolve(filePath), html)
     console.log('pre-rendered:', filePath)
