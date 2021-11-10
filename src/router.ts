@@ -5,15 +5,17 @@ import {
 } from 'vue-router'
 
 // Auto generates routes from vue files under ./pages
-//
-const pages = import.meta.glob('./pages/*.vue')
+const pages = import.meta.glob('./pages/*.{vue,jsx,tsx}')
 
 const routes = Object.keys(pages).map((path) => {
-  const name = path.match(/\.\/pages(.*).vue$/)[1].toLowerCase()
-  return {
+  const matched = path.match(/\.\/pages(.*).(vue|tsx|js)$/)
+  const name = matched !== null ? matched[1].toLowerCase() : ''
+
+  const result = {
     path: name === '/home' ? '/' : name,
     component: pages[path],
   }
+  return result
 })
 
 export function createRouter() {

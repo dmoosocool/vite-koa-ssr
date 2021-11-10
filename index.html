@@ -5,10 +5,20 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <style>
+      #app {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+      }
+    </style>
     <!--preload-links-->
   </head>
   <body>
     <div id="app"><!--app-html--></div>
-    <script type="module" src="/src/entry-client.js"></script>
+    <script type="module" src="/ssr/client.ts"></script>
   </body>
 </html>

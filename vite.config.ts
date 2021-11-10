@@ -5,21 +5,26 @@ import styleImport from 'vite-plugin-style-import'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import components from 'unplugin-vue-components/vite'
 import WindiCSS from 'vite-plugin-windicss'
+import legacy from '@vitejs/plugin-legacy'
+
 import * as path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    alias: [{find: '@', replacement: path.resolve(__dirname, 'src')}]
+    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
   optimizeDeps: {
-    include: ['element-plus']
-  },  
+    include: ['element-plus'],
+  },
   plugins: [
-    vue(), 
-    components({ 
+    legacy({
+      targets: ['defaults', 'not IE 11'],
+    }),
+    vue(),
+    components({
       extensions: ['vue', 'js', 'ts', 'jsx', 'tsx'],
-      resolvers: [ElementPlusResolver()] 
+      resolvers: [ElementPlusResolver()],
     }),
     WindiCSS(),
     jsx(),
@@ -35,13 +40,13 @@ export default defineConfig({
           },
           resolveComponent: (name) => {
             return `element-plus/lib/${name}`
-          }
-        }
-      ]
-    })
+          },
+        },
+      ],
+    }),
   ],
   esbuild: {
     jsxFactory: 'h',
-    jsxFragment: 'Fragment'
-  }
+    jsxFragment: 'Fragment',
+  },
 })
