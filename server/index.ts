@@ -52,7 +52,7 @@ async function createServer(
   }
 
   // inject routes.
-  router.all('/(.*)', async (ctx, next) => {
+  router.all('/((?!api).*)', async (ctx, next) => {
     try {
       const url = ctx.originalUrl
       let template, render
@@ -92,7 +92,16 @@ async function createServer(
       // console.log(e.stack)
       ctx.status = 500
       ctx.body = (e as Error).stack
+    } finally {
+      next()
     }
+  })
+
+  router.get('/api/(.*)', async (ctx, next) => {
+    ctx.status = 201
+    ctx.body = 'hello api'
+    console.log(ctx)
+    next()
   })
 
   app.use(router.routes())
